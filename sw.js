@@ -1,6 +1,6 @@
-const CACHE_NAME = "oriente-farma-pwa-v2";
+const CACHE_NAME = "oriente-farma-pwa-v3";
 const APP_ROOT = new URL("./", self.location).pathname;
-const ASSETS = ["./", "./index.html", "./manifest.json", "./icon.svg"];
+const ASSETS = ["./", "./index.html", "./manifest.json", "./icon.svg", "./extra-products.txt"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
