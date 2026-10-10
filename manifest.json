@@ -1,7 +1,7 @@
 {
-  "name": "Pedido Fácil | Oriente Farma",
-  "short_name": "Oriente Farma",
-  "description": "Catálogo de produtos e envio de pedidos da Oriente Farma pelo WhatsApp.",
+  "name": "OL MERCK MARCAS",
+  "short_name": "OL MERCK MARCAS",
+  "description": "Catálogo de produtos e envio de pedidos OL MERCK MARCAS pelo WhatsApp.",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
