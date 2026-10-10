@@ -1,4 +1,4 @@
-const CACHE_NAME = "oriente-farma-pwa-v8";
+const CACHE_NAME = "oriente-farma-pwa-v9";
 const APP_ROOT = new URL("./", self.location).pathname;
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon.svg", "./extra-products.txt"];
 self.addEventListener("install", event => {
