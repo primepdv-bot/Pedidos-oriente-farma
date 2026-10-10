@@ -80,6 +80,9 @@ document.getElementById("customer").addEventListener("input",renderCart);documen
 document.getElementById("clear").onclick=()=>{Object.keys(cart).forEach(k=>delete cart[k]);renderProducts();renderCart()};
 renderProducts();renderCart();
 
+async function loadExtraProducts(){try{const response=await fetch("./extra-products.txt?v=1");if(!response.ok)throw new Error("Não foi possível carregar a lista adicional");const encoded=(await response.text()).trim();const bytes=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));const additions=JSON.parse(await new Response(stream).text());PRODUCTS.push(...additions);renderProducts();renderCart();}catch(error){console.error("Erro ao carregar Nova Química/Sandoz",error);}}
+loadExtraProducts();
+
 document.getElementById("medleyProfile").addEventListener("change",e=>{medleyProfile=e.target.value;Object.keys(cart).forEach(k=>delete cart[k]);renderProducts();renderCart()});
 const shareOffersButton=document.getElementById("shareOffers");
 shareOffersButton.addEventListener("click",()=>{const url=window.location.href.split("#")[0];const message="💚 *CATÁLOGO OL ORIENTE FARMA — MERCK MARCAS, EMS, BIOLAB, MEDLEY, NOVA QUÍMICA E SANDOZ*\n\nEscolha a marca, consulte os produtos e envie um pedido separado para cada marca diretamente pelo WhatsApp.\n\n🔗 Acesse aqui: "+url+"\n\n⚠️ Preços, estoque e tributação sujeitos à confirmação.";const wa="https://wa.me/?text="+encodeURIComponent(message);window.open(wa,"_blank","noopener,noreferrer")});
