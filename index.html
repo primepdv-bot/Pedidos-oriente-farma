@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#0b5b48">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Oriente Farma">
+<meta name="apple-mobile-web-app-title" content="OL MERCK MARCAS">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./icon.svg">
-<title>Pedido Fácil | Oriente Farma</title>
+<title>OL MERCK MARCAS</title>
 <style>
 :root{--green:#0b5b48;--green2:#08785a;--gold:#f0b83c;--bg:#f4f7f6;--ink:#17211e;--muted:#63716c;--line:#dce5e1;--white:#fff;--red:#a83232}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -36,7 +36,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 5px}
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="brand">ORIENTE FARMA</div><h1>Pedido Fácil</h1><p>Escolha os produtos e envie seu pedido direto pelo WhatsApp.</p><p>Preços e estoque sujeitos à confirmação.</p><button class="install-btn" id="installApp">＋ Instalar aplicativo</button></div></header>
+<header><div class="wrap"><div class="brand">OL MERCK MARCAS</div><h1>OL MERCK MARCAS</h1><p>Escolha os produtos e envie seu pedido direto pelo WhatsApp.</p><p>Preços e estoque sujeitos à confirmação.</p><button class="install-btn" id="installApp">＋ Instalar aplicativo</button></div></header>
 <div class="searchbar"><div class="wrap"><input id="search" type="search" placeholder="Buscar produto, código ou EAN…" autocomplete="off"></div></div>
 <main><div id="count" class="count"></div><div id="products"></div><footer>Oriente Farma · Catálogo B2B · Valores estimados, sujeitos à confirmação de estoque, preço e tributação.</footer></main>
 <div class="cartbar"><button class="cartbutton" id="openCart"><span>🛒 <span id="units">0</span> unidades · Ver pedido</span><span id="barTotal">R$ 0,00　›</span></button></div>
@@ -62,7 +62,7 @@ function setQty(code,q){const p=PRODUCTS.find(x=>String(x.codigo)===String(code)
 function lines(){return PRODUCTS.filter(p=>available(p)&&(cart[p.codigo]||0)>0).map(p=>({p,q:cart[p.codigo]}))}
 function total(){return Math.round(lines().reduce((s,l)=>s+Number(l.p.ol_st)*l.q,0)*100)/100}
 function renderCart(){const ls=lines(),units=ls.reduce((s,l)=>s+l.q,0);document.getElementById("units").textContent=units;document.getElementById("barTotal").textContent=money(total())+"　›";document.getElementById("modalTotal").textContent=money(total());document.getElementById("cartLines").innerHTML=ls.length?ls.map(({p,q})=>`<div class="cartline"><div style="min-width:0"><div class="desc">${safe(p.descricao)}</div><div class="sub">Cód. ${safe(p.codigo)} · ${money(p.ol_st)} c/ ST × ${q} = ${money(p.ol_st*q)}</div></div><div class="stepper"><button data-act="minus" data-code="${safe(p.codigo)}">−</button><input aria-label="Quantidade" inputmode="numeric" data-act="qty" data-code="${safe(p.codigo)}" value="${q}"><button data-act="plus" data-code="${safe(p.codigo)}">+</button></div></div>`).join(""):'<p class="note">Seu carrinho está vazio. Adicione produtos para continuar.</p>';const message=buildMessage(ls);document.getElementById("send").href=`https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;document.getElementById("send").style.opacity=ls.length?1:.5;document.getElementById("send").style.pointerEvents=ls.length?"auto":"none"}
-function buildMessage(ls){const out=["🟢 *PEDIDO ORIENTE FARMA*","━━━━━━━━━━━━━━━━━━"];const customer=document.getElementById("customer").value.trim(),notes=document.getElementById("notes").value.trim();if(customer)out.push("🏪 *Cliente:* "+customer);out.push("",`📦 *ITENS DO PEDIDO (${ls.length})*`,"");ls.forEach(({p,q},i)=>{out.push(`*${i+1}. ${p.descricao}*`,`   Código: ${p.codigo}`,`   Quantidade: ${q} un.`,`   Unitário c/ ST: ${money(p.ol_st)}`,`   *Subtotal: ${money(p.ol_st*q)}*`,"")});out.push("━━━━━━━━━━━━━━━━━━",`🧾 *TOTAL ESTIMADO: ${money(total())}*`);if(notes)out.push("","📝 *Observações:* "+notes);out.push("","⚠️ _Sujeito à confirmação de estoque, preço e tributação._");return out.join("\n")}
+function buildMessage(ls){const out=["🟢 *PEDIDO OL MERCK MARCAS*","━━━━━━━━━━━━━━━━━━"];const customer=document.getElementById("customer").value.trim(),notes=document.getElementById("notes").value.trim();if(customer)out.push("🏪 *Cliente:* "+customer);out.push("",`📦 *ITENS DO PEDIDO (${ls.length})*`,"");ls.forEach(({p,q},i)=>{out.push(`*${i+1}. ${p.descricao}*`,`   Código: ${p.codigo}`,`   Quantidade: ${q} un.`,`   Unitário c/ ST: ${money(p.ol_st)}`,`   *Subtotal: ${money(p.ol_st*q)}*`,"")});out.push("━━━━━━━━━━━━━━━━━━",`🧾 *TOTAL ESTIMADO: ${money(total())}*`);if(notes)out.push("","📝 *Observações:* "+notes);out.push("","⚠️ _Sujeito à confirmação de estoque, preço e tributação._");return out.join("\n")}
 document.getElementById("search").addEventListener("input",renderProducts);
 document.addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(!b)return;const c=b.dataset.code,a=b.dataset.act,cur=cart[c]||0;if(a==="minus")setQty(c,cur-1);if(a==="plus")setQty(c,cur+1)});
 document.addEventListener("change",e=>{const el=e.target;if(el.matches('input[data-act="qty"]'))setQty(el.dataset.code,el.value)});
