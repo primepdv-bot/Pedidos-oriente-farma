@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#0b5b48"/><path d="M120 104h272a24 24 0 0 1 24 24v256a24 24 0 0 1-24 24H120a24 24 0 0 1-24-24V128a24 24 0 0 1 24-24Z" fill="#fff"/><path d="M216 144h80v72h72v80h-72v72h-80v-72h-72v-80h72z" fill="#0b5b48"/><path d="M130 330h252v22H130z" fill="#d7eee5"/><text x="256" y="410" font-family="Arial,sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#fff">ORIENTE</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="64" fill="#080b3d"/>
+<defs><path id="top" d="M 82,256 A 174,174 0 0,1 430,256"/><path id="bottom" d="M 430,256 A 174,174 0 0,1 82,256"/></defs>
+<g fill="#fff" font-family="Arial,sans-serif" font-size="27" font-weight="800" letter-spacing="6">
+<text><textPath href="#top" startOffset="50%" text-anchor="middle">ORIENTE FARMA</textPath></text>
+<text><textPath href="#bottom" startOffset="50%" text-anchor="middle">ORIENTE FARMA</textPath></text>
+</g>
+<g fill="#fff">
+<path d="M190 151h69c25 0 42 17 42 42v20h-40v-13c0-7-5-12-12-12h-41c-8 0-13 5-13 13v14c0 14-8 25-21 31l-22 10c-7 3-10 9-10 16v16c0 8 5 13 13 13h47l28 29-28 29h-54c-29 0-48-20-48-49v-39c0-23 12-41 33-51l26-12c7-3 11-9 11-17v-10c0-28 19-50 48-50z"/>
+<path d="M323 215h-43l-28 28 28 29h43c8 0 13 5 13 13v13c0 7-4 13-11 16l-24 11c-17 8-28 24-28 43v10c0 8-5 13-13 13h-43c-7 0-12-5-12-12v-21h-40v26c0 28 19 48 48 48h53c29 0 48-20 48-49v-8c0-7 3-12 10-15l28-13c21-10 33-28 33-51v-34c0-29-19-49-48-49z"/>
+</g>
+</svg>
