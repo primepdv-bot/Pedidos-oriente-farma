@@ -4,12 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b5b48">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Oriente Farma">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon.svg">
 <title>Pedido Fácil | Oriente Farma</title>
 <style>
 :root{--green:#0b5b48;--green2:#08785a;--gold:#f0b83c;--bg:#f4f7f6;--ink:#17211e;--muted:#63716c;--line:#dce5e1;--white:#fff;--red:#a83232}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 header{background:linear-gradient(135deg,var(--green),#073e33);color:white;padding:22px 16px 24px}
-.wrap{max-width:850px;margin:auto}header .brand{font-size:12px;letter-spacing:.16em;font-weight:800;opacity:.86}h1{margin:4px 0;font-size:28px;line-height:1.1}header p{margin:8px 0 0;font-size:13px;opacity:.9}
+.wrap{max-width:850px;margin:auto}header .brand{font-size:12px;letter-spacing:.16em;font-weight:800;opacity:.86}h1{margin:4px 0;font-size:28px;line-height:1.1}header p{margin:8px 0 0;font-size:13px;opacity:.9}.install-btn{display:none;margin-top:14px;border:1px solid #b9e4d5;border-radius:10px;background:#fff;color:#075b47;padding:10px 14px;font-size:14px;font-weight:800;cursor:pointer}.install-btn.show{display:inline-flex;align-items:center;gap:8px}
 .searchbar{position:sticky;top:0;z-index:4;background:#f4f7f6ed;backdrop-filter:blur(10px);padding:12px 14px;border-bottom:1px solid var(--line)}
 .searchbar input{width:100%;height:48px;border:1px solid #cad8d2;border-radius:13px;padding:0 14px;font-size:16px;background:white;outline-color:var(--green)}
 main{max-width:850px;margin:auto;padding:10px 12px 110px}.count{font-size:12px;color:var(--muted);padding:4px 2px 8px}
@@ -30,7 +36,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 5px}
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="brand">ORIENTE FARMA</div><h1>Pedido Fácil</h1><p>Escolha os produtos e envie seu pedido direto pelo WhatsApp.</p><p>Preços e estoque sujeitos à confirmação.</p></div></header>
+<header><div class="wrap"><div class="brand">ORIENTE FARMA</div><h1>Pedido Fácil</h1><p>Escolha os produtos e envie seu pedido direto pelo WhatsApp.</p><p>Preços e estoque sujeitos à confirmação.</p><button class="install-btn" id="installApp">＋ Instalar aplicativo</button></div></header>
 <div class="searchbar"><div class="wrap"><input id="search" type="search" placeholder="Buscar produto, código ou EAN…" autocomplete="off"></div></div>
 <main><div id="count" class="count"></div><div id="products"></div><footer>Oriente Farma · Catálogo B2B · Valores estimados, sujeitos à confirmação de estoque, preço e tributação.</footer></main>
 <div class="cartbar"><button class="cartbutton" id="openCart"><span>🛒 <span id="units">0</span> unidades · Ver pedido</span><span id="barTotal">R$ 0,00　›</span></button></div>
@@ -66,6 +72,7 @@ document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==
 document.getElementById("customer").addEventListener("input",renderCart);document.getElementById("notes").addEventListener("input",renderCart);
 document.getElementById("clear").onclick=()=>{Object.keys(cart).forEach(k=>delete cart[k]);renderProducts();renderCart()};
 renderProducts();renderCart();
+let installPrompt=null;const installButton=document.getElementById("installApp");window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;installButton.classList.add("show")});installButton.addEventListener("click",async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;installButton.classList.remove("show")}else{alert("Para instalar: abra o menu ⋮ do Chrome e escolha \"Instalar aplicativo\" ou \"Adicionar à tela inicial\".")}});window.addEventListener("appinstalled",()=>{installButton.classList.remove("show");installPrompt=null});if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
 </script>
 </body>
 </html>
