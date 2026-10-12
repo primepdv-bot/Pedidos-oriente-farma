@@ -1,8 +1,9 @@
 # Planilhas de atualização
 
-Envie aqui, na mesma alteração do GitHub, as três planilhas atualizadas com estes nomes exatos:
+Para atualizar os catálogos, envie as quatro planilhas mais recentes nesta pasta, em um único commit na branch `main`, com estes nomes exatos:
 - `EMS.xlsx`
 - `BIOLAB.xlsx`
 - `NOVA_QUIMICA.xlsx`
+- `SANDOZ.xlsx`
 
-Depois de confirmar o commit na branch `main`, o workflow `Atualizar catálogos Oriente Farma` valida os arquivos e atualiza os catálogos. Não apague nem substitua arquivos de outras marcas. A planilha Sandoz não é necessária para a atualização e seus produtos serão preservados.
+O workflow **Atualizar catálogos Oriente Farma** valida os arquivos e atualiza somente EMS, Biolab, Nova Química e Sandoz. Merck Marcas, Medley, carrinho e fluxo de WhatsApp permanecem preservados. Se faltar arquivo ou coluna obrigatória, o processamento falha e não publica a atualização dos catálogos.
