@@ -1,0 +1,38 @@
+name: Atualizar catálogos Oriente Farma
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "catalog-input/*.xlsx"
+      - "scripts/atualizar_catalogos.py"
+      - ".github/workflows/atualizar-catalogos.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependências
+        run: pip install pandas openpyxl
+      - name: Validar e atualizar catálogos
+        run: python scripts/atualizar_catalogos.py
+      - name: Salvar atualização
+        run: |
+          git config user.name "oriente-catalog-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html extra-products.txt
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração de catálogo detectada."
+          else
+            git commit -m "Atualiza catálogos EMS, Biolab e Nova Química"
+            git push
+          fi
