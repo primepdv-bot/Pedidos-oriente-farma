@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atualiza os catálogos EMS, Biolab e Nova Química a partir de planilhas Excel."""
+"""Atualiza EMS, Biolab, Nova Química e Sandoz por planilhas Excel."""
 import base64, gzip, json, math, re
 from pathlib import Path
 import pandas as pd
@@ -12,6 +12,7 @@ BRANDS = [
     ("EMS", "EMS", "EMS.xlsx"),
     ("BIOLAB", "BIOLAB GENERICOS", "BIOLAB.xlsx"),
     ("NOVA QUIMICA", "NOVA QUIMICA GENERICO", "NOVA_QUIMICA.xlsx"),
+    ("SANDOZ", "SANDOZ", "SANDOZ.xlsx"),
 ]
 
 def clean(value):
@@ -68,7 +69,7 @@ def main():
     required_files = [INPUT / name for _, _, name in BRANDS]
     missing = [p.name for p in required_files if not p.exists()]
     if missing:
-        raise FileNotFoundError("Envie as três planilhas em catalog-input/: " + ", ".join(missing))
+        raise FileNotFoundError("Envie as quatro planilhas em catalog-input/: " + ", ".join(missing))
 
     new_by_brand = {}
     for brand, line, filename in BRANDS:
@@ -88,30 +89,27 @@ def main():
     encoded = json.dumps(merged, ensure_ascii=False, separators=(",", ":"))
     html = html[:match.start(1)] + encoded + html[match.end(1):]
 
-    # Atualiza o número de revisão do cache sempre que o catálogo extra muda.
-    html = re.sub(r'extra-products\.txt\?rev=\d+', 'extra-products.txt?rev=8', html)
+    html = re.sub(r'extra-products\.txt\?rev=\d+', 'extra-products.txt?rev=9', html)
     old_loader = 'const normalized=additions.map((p,i)=>({...p,brand:i<185?"NOVA QUIMICA":"SANDOZ"}));'
     new_loader = 'const normalized=additions.map(p=>({...p,brand:/SANDOZ|SZG/i.test(String(p.brand||"")+" "+String(p.linha||"")+" "+String(p.descricao||""))?"SANDOZ":"NOVA QUIMICA"}));'
     if old_loader in html:
         html = html.replace(old_loader, new_loader)
     old_count = 'if(normalized.length!==329)throw new Error("Foram lidos "+normalized.length+" produtos; esperado 329")'
     html = html.replace(old_count, 'if(!normalized.length)throw new Error("Nenhum produto extra foi carregado")')
-    INDEX.write_text(html, encoding="utf-8")
 
-    # Recria Nova Química com os dados novos e mantém todos os itens Sandoz existentes.
     raw = EXTRA.read_text(encoding="utf-8").strip()
     old_products = json.loads(gzip.decompress(base64.b64decode(raw)).decode("utf-8"))
     if isinstance(old_products, dict):
         old_products = old_products.get("products", old_products.get("items", []))
-    sandoz = [p for p in old_products if "SANDOZ" in (str(p.get("brand","")) + " " + str(p.get("linha","")) + " " + str(p.get("descricao",""))).upper() or "SZG" in (str(p.get("linha","")) + " " + str(p.get("descricao",""))).upper()]
     nova = new_by_brand["NOVA QUIMICA"]
+    sandoz = new_by_brand["SANDOZ"]
     extras = nova + sandoz
-    if not sandoz:
-        raise RuntimeError("Não encontrei produtos Sandoz no catálogo antigo; atualização cancelada para preservar a marca.")
     payload = json.dumps(extras, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    # Write all output only after every input was validated.
+    INDEX.write_text(html, encoding="utf-8")
     EXTRA.write_text(base64.b64encode(gzip.compress(payload, mtime=0)).decode("ascii") + "\n", encoding="utf-8")
-    print(f"Nova Química: {len(nova)} | Sandoz preservada: {len(sandoz)} | Extras: {len(extras)}")
-    print(f"Total no array principal: {len(merged)}; outras marcas mantidas.")
+    print(f"Nova Química: {len(nova)} | Sandoz: {len(sandoz)} | Extras: {len(extras)}")
+    print(f"Array principal: {len(merged)}; Merck Marcas e Medley preservadas.")
 
 if __name__ == "__main__":
     main()
