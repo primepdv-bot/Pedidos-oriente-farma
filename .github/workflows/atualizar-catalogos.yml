@@ -4,7 +4,12 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - "EMS.xlsx"
+      - "BIOLAB.xlsx"
+      - "NOVA_QUIMICA.xlsx"
+      - "SANDOZ.xlsx"
       - "catalog-input/*.xlsx"
+      - ".github/workflows/atualizar-catalogos.yml"
 
 permissions:
   contents: write
@@ -15,6 +20,13 @@ jobs:
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
+      - name: Preparar planilhas enviadas
+        run: |
+          mkdir -p catalog-input
+          for f in EMS BIOLAB NOVA_QUIMICA SANDOZ; do
+            if [ -f "$f.xlsx" ]; then cp "$f.xlsx" "catalog-input/$f.xlsx"; fi
+          done
+          ls -l catalog-input
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
@@ -31,6 +43,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nenhuma alteração de catálogo detectada."
           else
-            git commit -m "Atualiza catálogos EMS, Biolab e Nova Química"
+            git commit -m "Atualiza catálogos EMS, Biolab, Nova Química e Sandoz"
             git push
           fi
